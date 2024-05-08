@@ -2,7 +2,7 @@
 The "Wikipedia-Crawler-Inverted-Index" project is a Java-based application designed for information retrieval tasks. It combines web crawling with inverted indexing and cosine similarity computation to enable efficient searching and ranking of Wikipedia articles based on user queries.
 
 
-Functionality
+# Functionality
 The project offers the following key functionalities:
 
 1. Web Crawling:
