@@ -68,7 +68,7 @@ public class Index5 {
         System.out.println("------------------------------------------------------");
         System.out.println("*** Number of terms = " + index.size());
     }
-     //----------------------------------------------------------------------------  
+     //----------------------------------------------------------------------------
     public int buildIndex(String ln, int fid) {
         int flen = 0;
 
@@ -175,7 +175,7 @@ public class Index5 {
         return flen;
     }
 
-//----------------------------------------------------------------------------  
+//----------------------------------------------------------------------------
     boolean stopWord(String word) {
         if (word.equals("the") || word.equals("to") || word.equals("be") || word.equals("for") || word.equals("from") || word.equals("in")
                 || word.equals("a") || word.equals("into") || word.equals("by") || word.equals("or") || word.equals("and") || word.equals("that")) {
@@ -205,20 +205,20 @@ public class Index5 {
         Posting answer = null;
         Posting last = null;
 //      2 while p1  != NIL and p2  != NIL
-     
+
 //          3 do if docID ( p 1 ) = docID ( p2 )
- 
+
 //          4   then ADD ( answer, docID ( p1 ))
                 // answer.add(pL1.docId);
- 
+
 //          5       p1 ← next ( p1 )
 //          6       p2 ← next ( p2 )
- 
+
  //          7   else if docID ( p1 ) < docID ( p2 )
-            
+
 //          8        then p1 ← next ( p1 )
 //          9        else p2 ← next ( p2 )
- 
+
 //      10 return answer
         return answer;
     }
@@ -243,7 +243,7 @@ public class Index5 {
         }
         return words;
     }
-//==========================================================    
+//==========================================================
    public String find_07a(String phrase) {
         System.out.println("-------------------------  find_07 -------------------------");
 
@@ -299,7 +299,7 @@ public void searchLoop() {
 
     public void store(String storageName) {
         try {
-            String pathToStorage = "../../"+storageName;
+            String pathToStorage = "tmp11\\rl" + storageName;
             Writer wr = new FileWriter(pathToStorage);
             for (Map.Entry<Integer, SourceRecord> entry : sources.entrySet()) {
                 System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue().URL + ", Value = " + entry.getValue().title + ", Value = " + entry.getValue().text);
@@ -334,22 +334,22 @@ public void searchLoop() {
             e.printStackTrace();
         }
     }
-//=========================================    
+//=========================================
     public boolean storageFileExists(String storageName){
-        java.io.File f = new java.io.File("/home/ehab/tmp11/rl/"+storageName);
+        java.io.File f = new java.io.File("tmp11\\rl"+storageName);
         if (f.exists() && !f.isDirectory())
             return true;
         return false;
-            
+
     }
-//----------------------------------------------------    
+//----------------------------------------------------
     public void createStore(String storageName) {
         try {
-            String pathToStorage = "/home/ehab/tmp11/"+storageName;
+            String pathToStorage = "tmp11\\rl" + storageName;
             Writer wr = new FileWriter(pathToStorage);
             wr.write("end" + "\n");
             wr.close();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
