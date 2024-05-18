@@ -58,7 +58,7 @@ public class WebCrawlerWithDepth {
 //==============================================================================
 
     public void getPageLinks(String URL, int depth, invertedIndex.Index5 index) {
-       System.out.println("|| URL: [" + URL + "] --------  depth: " + depth + " fid=" + fid + " plinks=" + plinks + "\t|||| ");
+        System.out.println("|| URL: [" + URL + "] --------  depth: " + depth + " fid=" + fid + " plinks=" + plinks + "\t|||| ");
 
         if ((!(links.contains(URL)))
                 && (depth < MAX_DEPTH)
@@ -166,13 +166,13 @@ public class WebCrawlerWithDepth {
 
     }
 
-//==============================================================================
+    //==============================================================================
     public static void main(String[] args) {
 
         WebCrawlerWithDepth wc = new WebCrawlerWithDepth();
 
         invertedIndex.Index5 index = wc.initialize("test"); //   ukraine
-            index.find_07a("narmer giza pyramid");
-            index.searchLoop();
+        index.find_07a("narmer giza pyramid");
+        index.searchLoop();
     }
 }
