@@ -64,7 +64,7 @@ public class SortedScore {
             }
             String str =  "score = " + String.format("%.3f", p.score) + " \t " + p.title+  "  \t\t" +p.URL ;
             scores+=str+"<br>\n";
-            System.out.println(str);
+            //System.out.println(str);
             p = p.next;
         }
          return scores;

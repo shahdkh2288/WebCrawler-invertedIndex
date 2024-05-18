@@ -12,10 +12,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import static java.lang.Math.log10;
 import static java.lang.Math.sqrt;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
+
+import java.util.*;
 import java.io.PrintWriter;
 
 /**
@@ -245,37 +243,85 @@ public class Index5 {
     }
 //==========================================================
    public String find_07a(String phrase) {
-        System.out.println("-------------------------  find_07 -------------------------");
 
-        String result = "";
-        String[] words = phrase.split("\\W+");
-        int len = words.length;
-        sortedScore = new SortedScore();
+       System.out.println("-------------------------  find_07 -------------------------");
 
-        double scores[] = new double[N];
-        double qwt[] = new double[len];
-        double qnz[] = new double[len];
+       String result = "";
+       String[] words = phrase.split("\\W+");
+       int len = words.length;
 
-//1 float Scores[N] = 0
-//2 Initialize Length[N]
-//3 for each query term t
-//for (String term : terms) {
-//4 do calculate w t, q and fetch postings list for t
-//term = term.toLowerCase();
-//int tdf = index.get(term).doc_freq; // number of documents that contains the term
-//int ttf = index.get(term).term_freq; //
-//4.a compute idf
-//idf = log10(N / (double) tdf); // can be computed earlier
-//5 for each pair(doc_id, dtf ) in postings list
-//6 add the term score for (term/doc) to score of each doc
-//scores[p.docId] += (1 + log10((double) p.dtf)) * idf);
-//Normalize for the length of the doc
-//7 Read the array Length[d]
-//8 for each d
-//9 do Scores[d] = Scores[d]/Length[d]
-//10 return Top K components of Scores[]
+       sortedScore = new SortedScore();
 
-        return result;
+       double scores[] = new double[N];
+       double qwt[] = new double[len];
+       double qnz[] = new double[len];
+       for(int i=0; i<N;i++)
+       {
+           scores[i]=0.0;
+       }
+
+
+       double[] Length = new double[N];
+       for(int i=0; i<N;i++)
+       {
+           Length[i]=0.0;
+       }
+
+
+
+
+
+       for (int i = 0; i < len; i++) {
+           String instance = words[i].toLowerCase();
+           if (!index.containsKey(instance)) {
+               continue;
+           }
+
+           int tdf = index.get(instance).doc_freq;
+           double idf = Math.log10((double) N / tdf);
+
+
+           qwt[i] = idf;
+
+           Posting postings = index.get(instance).pList;
+
+           while (postings != null) {
+               int doc = postings.docId;
+
+               double tf = 1+log10(postings.dtf);
+               scores[doc] += tf * idf;
+               Length[doc] = sources.get(doc).length;
+
+               postings = postings.next;
+           }
+       }
+
+
+       for (int d = 0; d < N; d++) {
+           if (Length[d] != 0) {
+               scores[d] /= Math.sqrt(Length[d]);
+               scores[d] *= 100;
+           }
+       }
+
+
+       int k = 10;
+       for (int d = 0; d < N && k > 0; d++) {
+           if (scores[d] >= 0) {
+               SourceRecord source = sources.get(d);
+               sortedScore.insertScoreRecord(scores[d], source.URL, source.title, source.text);
+               k--;
+           }
+       }
+
+
+       result = sortedScore.printScores();
+       return result;
+
+
+
+
+
     }
 /////---------------------------------
 public void searchLoop() {
@@ -287,6 +333,7 @@ public void searchLoop() {
             try {
                 phrase = in.readLine();
                 find_07a(phrase);
+                System.out.println(find_07a(phrase));
                 //        find_08(phrase);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -299,7 +346,7 @@ public void searchLoop() {
 
     public void store(String storageName) {
         try {
-            String pathToStorage = "tmp11\\rl" + storageName;
+            String pathToStorage = "C:\\Users\\ZATATA\\Downloads\\Second Sem\\IR\\ass3\\Wikipedia-Crawler-Inverted-Index\\is322_HW_3\\tmp11\\rl\\" + storageName;
             Writer wr = new FileWriter(pathToStorage);
             for (Map.Entry<Integer, SourceRecord> entry : sources.entrySet()) {
                 System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue().URL + ", Value = " + entry.getValue().title + ", Value = " + entry.getValue().text);
@@ -336,7 +383,7 @@ public void searchLoop() {
     }
 //=========================================
     public boolean storageFileExists(String storageName){
-        java.io.File f = new java.io.File("tmp11\\rl"+storageName);
+        java.io.File f = new java.io.File("C:\\Users\\ZATATA\\Downloads\\Second Sem\\IR\\ass3\\Wikipedia-Crawler-Inverted-Index\\is322_HW_3\\tmp11\\rl\\"+storageName);
         if (f.exists() && !f.isDirectory())
             return true;
         return false;
@@ -345,7 +392,7 @@ public void searchLoop() {
 //----------------------------------------------------
     public void createStore(String storageName) {
         try {
-            String pathToStorage = "tmp11\\rl" + storageName;
+            String pathToStorage = "C:\\Users\\ZATATA\\Downloads\\Second Sem\\IR\\ass3\\Wikipedia-Crawler-Inverted-Index\\is322_HW_3\\tmp11\\rl\\" + storageName;
             Writer wr = new FileWriter(pathToStorage);
             wr.write("end" + "\n");
             wr.close();

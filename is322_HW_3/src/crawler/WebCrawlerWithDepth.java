@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class WebCrawlerWithDepth {
 
-    private static final int MAX_DEPTH =2;
+    private static final int MAX_DEPTH =3;
     private static final int MAX_PER_PAGE = 6;
     int max_docs = 20;
     private HashSet<String> links;
@@ -104,7 +104,8 @@ public class WebCrawlerWithDepth {
                 sources.put(fid, sr);
 
                 // Pass the docText for the inverted index with the doc id
-                index.addDocument(fid, docText);
+                //index.addDocument(fid, docText);
+                index.buildIndex(docText, fid);
 
                 plinks++;  // accumulator for the link in a sub-branch
                 fid++;   // current document id
@@ -172,7 +173,10 @@ public class WebCrawlerWithDepth {
         WebCrawlerWithDepth wc = new WebCrawlerWithDepth();
 
         invertedIndex.Index5 index = wc.initialize("test"); //   ukraine
-        index.find_07a("narmer giza pyramid");
+        index.printDictionary();
+
+        System.out.println(index.find_07a("narmer giza pyramid"));
         index.searchLoop();
+
     }
 }
